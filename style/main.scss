@@ -1,0 +1,25 @@
+#mycanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: orange;
+}
+
+#canvas2 {
+  background: blue;
+  position: absolute;
+  top: 0;
+}
+
+#canvas-super {
+  background: blue;
+  position: absolute;
+  display: block;
+  top: 0;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}

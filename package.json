@@ -1,0 +1,29 @@
+{
+  "name": "songs",
+  "version": "0.0.0",
+  "description": "responsive lyrics display",
+  "main": "bundle.js",
+  "devDependencies": {
+    "jsx-loader": "^0.12.2",
+    "react-hot-loader": "^1.1.1",
+    "webpack": "^1.5.1",
+    "webpack-dev-server": "1.6.4",
+    "css-loader": "^0.9.1",
+    "sass-loader": "^0.4.0",
+    "style-loader": "^0.8.3"
+  },
+  "dependencies": {
+    "react": "^0.13.0-rc1",
+    "flux": "^2.0.1",
+    "immutable": "^3.6.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "typing",
+    "game"
+  ],
+  "author": "phil holden",
+  "license": "ISC"
+}
