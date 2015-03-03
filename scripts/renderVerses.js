@@ -30,8 +30,7 @@ function renderVerses(song, w, h, bounds) {
 
   //bounds true on second pass
   if (bounds) {
-    sf = aspect > (bounds.w/1.1) / (bounds.h/1.1) ? h / song.pxHeight : w / song.maxWidth;
-    sf *= 1;
+    sf = aspect > bounds.w / bounds.h ? h / (bounds.h/(sf*1.1)) : w / (bounds.w/(sf*1.1));
     canvas.width = Math.ceil(sf * song.maxWidth) + padding * 2;
     canvas.height = Math.ceil(sf * song.pxHeight) + padding * 2;
   } else {
