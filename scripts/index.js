@@ -38,32 +38,126 @@ var ctx = canvas2.getContext('2d');
 ctx.fillStyle = '#fff';
 ctx.fillRect(7,0,3,2);
 
-// function canvasGetPixels(canvas) {
-//   var ctx = canvas.getContext('2d');
-//   var w = canvas.width;
-//   var h = canvas.height;
-//   var imageData = ctx.getImageData(0, 0, w, h);
-//   console.log(imageData.data)
-//   var buf = new ArrayBuffer(imageData.data.length);
-//   var buf8 = new Uint8ClampedArray(buf);
-//   var data = new Uint32Array(buf);
-
-//   buf8.set(buf);
-//   return buf8;
-// }
 
 
 
 //measureString('Helloyg', canvas2, 80);
 
-function renderSong(song, w, h) {
+function renderSong(song, w, h, bounds) {
+  var aspect = w / h;
+  var canvas = document.createElement('canvas');
+  var mLineHeight = song.fontMetrics.h * song.lineHeight;
+  var sf = aspect > song.aspect ? h / song.pxHeight : w / song.maxWidth;
+  var ctx;
+  var padding = 4;
+
+  function drawVerse(verse) {
+    var lineNum = 0;
+    verse.lines.forEach(function(line) {
+      line.brokenLine.split('\n').forEach(function(fragment) {
+        ctx.fillText(fragment, 0, song.fontMetrics.ascent + lineNum * mLineHeight);
+        lineNum++;
+      });
+    });
+  }
+
+  canvas.setAttribute('id', 'canvas-super');
+
+  if (bounds) {
+    sf = aspect > (bounds.w/1.1) / (bounds.h/1.1) ? h / song.pxHeight : w / song.maxWidth;
+    sf *= 1;
+    canvas.width = Math.ceil(sf * song.maxWidth) + padding * 2;
+    canvas.height = Math.ceil(sf * song.pxHeight) + padding * 2;
+  } else {
+    sf = aspect > song.aspect ? h / song.pxHeight : w / song.maxWidth;
+    sf *= 1.1;
+    canvas.width = Math.ceil(sf * song.maxWidth) + padding * 2;
+    canvas.height = Math.ceil(sf * song.pxHeight) + padding * 2;
+  }
+
+  ctx = canvas.getContext('2d');
+  ctx.font = song.fontHeight + 'px ' + song.fontName;
+  ctx.fillStyle = '#fff';
+  ctx.save();
+  ctx.scale(sf,sf);
+  ctx.translate(padding/sf, padding/sf);
+
+  //draw all verses on top of each other
+  song.verses.forEach(drawVerse);
+
+  if (bounds) {
+    var verseCanvases = [];
+    bounds = canvasGetBounds(canvas);
+    document.body.appendChild(canvas);
+    song.verses.forEach(function(verse) {
+      var verseCanvas = document.createElement('canvas');
+      var verseCtx;
+      verseCanvas.width = bounds.w;
+      verseCanvas.height = bounds.h;
+      verseCtx = verseCanvas.getContext('2d');
+      ctx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
+      verseCtx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
+      verseCtx.fillRect(0,0,bounds.w,bounds.h);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawVerse(verse);
+      verseCtx.drawImage(canvas, -bounds.x,-bounds.y);
+      verseCanvases.push(verseCanvas);
+      document.body.appendChild(verseCanvas);
+    });
+    return ;
+  } else {
+    bounds = canvasGetBounds(canvas);
+    return renderSong(song, w, h, bounds);
+  }
+}
+
+
+// function renderSong(song, w, h) {
+//   var aspect = w / h;
+//   var canvas = document.createElement('canvas');
+//   var mLineHeight = song.fontMetrics.h * song.lineHeight;
+//   var sf = aspect > song.aspect ? h / song.pxHeight : w / song.maxWidth;
+//   var ctx;
+//   var padding = 20;
+
+//   canvas.setAttribute('id', 'canvas-super');
+//   sf *= 1.1;
+//   canvas.width = Math.ceil(sf * song.maxWidth) + padding * 2;
+//   canvas.height = Math.ceil(sf * song.pxHeight) + padding * 2;
+
+//   ctx = canvas.getContext('2d');
+//   ctx.font = song.fontHeight + 'px ' + song.fontName;
+//   ctx.fillStyle = '#fff';
+//   ctx.save();
+//   ctx.scale(sf,sf);
+//   ctx.translate(padding/sf, padding/sf);
+
+//   //ctx.fillRect(-padding/sf,-padding/sf,10,10);
+
+//   song.verses.forEach(function(verse) {
+//     var lineNum = 0;
+
+//     verse.lines.forEach(function(line) {
+//       line.brokenLine.split('\n').forEach(function(fragment) {
+//         ctx.fillText(fragment, 0, song.fontMetrics.ascent + lineNum * mLineHeight);
+//         lineNum++;
+//       });
+//     });
+//   });
+//   ctx.restore();
+//   document.body.appendChild(canvas);
+//   return canvasGetBounds(canvas);
+// }
+
+
+function renderSongOld(song, w, h) {
   var aspect = w / h;
   var canvas = document.createElement('canvas');
   var mLineHeight = song.fontMetrics.h * song.lineHeight;
   var boundsBig;
   var sf;
   var sf2;
-  var pad = 20;
+  var pad = 5;
   canvas.setAttribute('id', 'canvas-super');
 
   function renderAtScale(width2, height2, sf, fudge, tx, ty, padding) {
@@ -107,7 +201,7 @@ function renderSong(song, w, h) {
   }
 
   sf = aspect > song.aspect ? h / song.pxHeight : w / song.maxWidth;
-  sf *= 1.1;
+  sf *= 1.0;
 
   boundsBig = renderAtScale(song.maxWidth, song.pxHeight, sf, 5, 0, 0, pad);
   var hAcc = boundsBig.h / sf;
@@ -171,7 +265,10 @@ function renderVerse(song, verse, bounds) {
 var sc = SongContext(canvas2, 1.5, 20);
 var bestfit = sc.findBestFit(sc.getPlausibleLayouts(sc.init(song)),16,9);
 //one verse is too long
-var bounds = renderSong(bestfit,1024,900);
+//var bounds = renderSong(bestfit,1024,900);
+
+var v110 = renderSong(bestfit,1024,576);
+console.log(bestfit,v110);
 //renderVerse(bestfit, 1, bounds);
 
 //should add cutting margins
