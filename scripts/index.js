@@ -4,7 +4,7 @@ require('../style/main.scss');
 var SongCanvas = require('./SongCanvas');
 var SongContext = require('./SongContext');
 var Song = require('./Song');
-var renderVerses = require('./renderVerses');
+var renderVerses = require('./renderVersesVector');
 
 
 

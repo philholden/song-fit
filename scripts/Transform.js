@@ -103,4 +103,15 @@ Transform.prototype.transformPoint = function(px, py) {
   return [px, py];
 };
 
+Transform.prototype.transformRect = function(rx, ry, rw, rh) {
+  var topLeft = this.transformPoint(rx, ry);
+  var bottomRight = this.transformPoint(rx + rw, ry + rh);
+  return {
+    x:topLeft[0],
+    y:topLeft[1],
+    w:bottomRight[0],
+    h:bottomRight[1]
+  };
+};
+
 module.exports = Transform;
