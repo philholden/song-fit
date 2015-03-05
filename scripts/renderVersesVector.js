@@ -59,7 +59,8 @@ function renderVersesVector(song, w, h, bounds) {
     bounds = canvasGetBounds(canvas);
     topLeft = transInv.transformPoint(bounds.x, bounds.y);
     ctx.fillStyle = 'rgba(255,255,255,.5)';
-    ctx.fillRect(topLeft.x, topLeft.y, bounds.w/sf, bounds.h/sf);
+
+    ctx.fillRect(topLeft[0], topLeft[1], bounds.w/sf, bounds.h/sf);
     console.log(topLeft, bounds);
     document.body.appendChild(canvas);
 
