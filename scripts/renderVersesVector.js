@@ -8,7 +8,7 @@ var canvasGetBounds = require('./canvasGetBounds');
 //desired size in order to get better metrics. The second pass is
 //at the desired size.
 
-function renderVerses(song, w, h, bounds) {
+function renderVersesVector(song, w, h, bounds) {
   var aspect = w / h;
   var canvas = document.createElement('canvas');
   var mLineHeight = song.fontMetrics.h * song.lineHeight;
@@ -75,4 +75,4 @@ function renderVerses(song, w, h, bounds) {
   }
 }
 
-module.exports = renderVerses;
+module.exports = renderVersesVector;
