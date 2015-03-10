@@ -59,7 +59,8 @@ var bestfit = sc.findBestFit(sc.getPlausibleLayouts(sc.init(song)),16,9);
 //one verse is too long
 //var bounds = renderSong(bestfit,1024,900);
 
-var v110 = renderVerses(bestfit,1024,576);
+//var v110 = renderVerses(bestfit,1024,576);
+var v110 = renderVerses(bestfit,1024/1,576/1);
 console.log(bestfit,v110);
 //renderVerse(bestfit, 1, bounds);
 

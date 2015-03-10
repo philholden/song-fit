@@ -18,7 +18,7 @@ function renderVersesVector(song, w, h, bounds) {
   var padding = 4;
   var trans = new Transform();
   var transInv;
-  var topLeft;
+  var trueBounds;
 
   function drawVerse(verse, ctx) {
     var lineNum = 0;
@@ -57,26 +57,37 @@ function renderVersesVector(song, w, h, bounds) {
 
   if (bounds) {
     bounds = canvasGetBounds(canvas);
-    topLeft = transInv.transformPoint(bounds.x, bounds.y);
+    trueBounds = transInv.transformPoint(bounds.x, bounds.y);
+    trueBounds.w = bounds.w/sf;
+    trueBounds.h = bounds.w/sf;
     ctx.fillStyle = 'rgba(255,255,255,.5)';
 
-    ctx.fillRect(topLeft[0], topLeft[1], bounds.w/sf, bounds.h/sf);
-    console.log(topLeft, bounds);
+    ctx.fillRect(trueBounds.x, trueBounds.y, bounds.w/sf, bounds.h/sf);
+    console.log(trueBounds, bounds);
     document.body.appendChild(canvas);
 
-      // var verseCanvas = document.createElement('canvas');
-      // var verseCtx;
-      // //var verseTrans = new Transform();
-      // verseCanvas.width = bounds.w;
-      // verseCanvas.height = bounds.h;
-      // verseCtx = verseCanvas.getContext('2d');
-      // //verseCtx.translate(topLeft[0] - padding, topLeft[1] - padding);
-      // verseCtx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
-      // verseCtx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
-      // verseCtx.fillRect(0,0,bounds.w,bounds.h);
+    var verseCanvas = document.createElement('canvas');
+    var verseCtx;
+    var verseTrans = new Transform();
+    verseTrans.scale(sf,sf);
+    verseTrans.translate(-trueBounds.x,-trueBounds.y);
+    //verseTrans.scale(.5,.5);
+    //verseTrans.translate(bounds.w/2,bounds.h/2);
+    
 
-      // drawVerse(song.verses[1], verseCtx);
-      // document.body.appendChild(verseCanvas);
+
+
+    verseCanvas.width = bounds.w;
+    verseCanvas.height = bounds.h + 50;
+    verseCtx = verseCanvas.getContext('2d');
+    verseCtx.font = song.fontHeight + 'px ' + song.fontName;
+    verseCtx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
+    verseCtx.fillRect(0,0,bounds.w,bounds.h);
+    verseCtx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
+    verseCtx.setTransform.apply(verseCtx, verseTrans.m);
+
+    drawVerse(song.verses[1], verseCtx);
+    document.body.appendChild(verseCanvas);
 
     return ;
   } else {
