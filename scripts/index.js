@@ -60,7 +60,7 @@ var bestfit = sc.findBestFit(sc.getPlausibleLayouts(sc.init(song)),16,9);
 //var bounds = renderSong(bestfit,1024,900);
 
 //var v110 = renderVerses(bestfit,1024,576);
-var v110 = renderVerses(bestfit,1024/1,576/1);
+var v110 = renderVerses(bestfit,1024/1.6,576/1.6);
 console.log(bestfit,v110);
 //renderVerse(bestfit, 1, bounds);
 

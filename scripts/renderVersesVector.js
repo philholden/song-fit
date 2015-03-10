@@ -59,7 +59,7 @@ function renderVersesVector(song, w, h, bounds) {
     bounds = canvasGetBounds(canvas);
     trueBounds = transInv.transformPoint(bounds.x, bounds.y);
     trueBounds.w = bounds.w/sf;
-    trueBounds.h = bounds.w/sf;
+    trueBounds.h = bounds.h/sf;
     ctx.fillStyle = 'rgba(255,255,255,.5)';
 
     ctx.fillRect(trueBounds.x, trueBounds.y, bounds.w/sf, bounds.h/sf);
@@ -69,16 +69,26 @@ function renderVersesVector(song, w, h, bounds) {
     var verseCanvas = document.createElement('canvas');
     var verseCtx;
     var verseTrans = new Transform();
+    var scale = 1;
+    var xpos = 0.5;
+    var ypos = 0.5;
+    var theta = 3;
+    var origx = .5;
+    var origy = .5;
     verseTrans.scale(sf,sf);
     verseTrans.translate(-trueBounds.x,-trueBounds.y);
-    //verseTrans.scale(.5,.5);
-    //verseTrans.translate(bounds.w/2,bounds.h/2);
-    
+    verseTrans.scale(scale,scale);
+    verseTrans.translate(
+      trueBounds.w * (1) * xpos / scale,
+      trueBounds.h * (1) * ypos / scale
+    );
+    verseTrans.rotate(Math.PI * theta/180); //angle
+    verseTrans.translate(-trueBounds.w * origx,-trueBounds.h * origy); //origin
 
 
 
     verseCanvas.width = bounds.w;
-    verseCanvas.height = bounds.h + 50;
+    verseCanvas.height = bounds.h;
     verseCtx = verseCanvas.getContext('2d');
     verseCtx.font = song.fontHeight + 'px ' + song.fontName;
     verseCtx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
