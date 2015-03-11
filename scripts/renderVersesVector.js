@@ -69,23 +69,25 @@ function renderVersesVector(song, w, h, bounds) {
     var verseCanvas = document.createElement('canvas');
     var verseCtx;
     var verseTrans = new Transform();
-    var scale = 1;
+    var scale = .5;
     var xpos = 0.5;
     var ypos = 0.5;
-    var theta = 3;
+    var theta = 45;
     var origx = .5;
     var origy = .5;
     verseTrans.scale(sf,sf);
     verseTrans.translate(-trueBounds.x,-trueBounds.y);
     verseTrans.scale(scale,scale);
     verseTrans.translate(
-      trueBounds.w * (1) * xpos / scale,
-      trueBounds.h * (1) * ypos / scale
+      (trueBounds.w * origx),
+      (trueBounds.h * origy)
+    );
+    verseTrans.translate(
+      trueBounds.w * xpos / scale,
+      trueBounds.h * ypos / scale
     );
     verseTrans.rotate(Math.PI * theta/180); //angle
     verseTrans.translate(-trueBounds.w * origx,-trueBounds.h * origy); //origin
-
-
 
     verseCanvas.width = bounds.w;
     verseCanvas.height = bounds.h;

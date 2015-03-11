@@ -26,6 +26,16 @@ var humpty = [
   'Couldn\'t fit Fumpty together again'
 ].join('\n');
 
+
+if (module.hot) {
+  console.log('hot');
+  module.hot.accept();
+  module.hot.accept(
+    ['./renderVersesVector','./index','./Song','./SongCanvas'],
+  function() {
+    location.reload();
+  });
+}
 var song = new Song(humpty);
 
 var reqFullScreen = document.body.requestFullScreen ||
