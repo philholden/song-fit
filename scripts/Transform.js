@@ -77,6 +77,22 @@ Transform.prototype.rotate = function(rad) {
   this.m[3] = m22;
 };
 
+Transform.prototype.skewY = function(rad) {
+  var r = Math.tan(rad);
+  var m11 = this.m[0] + this.m[2] * r;
+  var m12 = this.m[1] + this.m[3] * r;
+  this.m[0] = m11;
+  this.m[1] = m12;
+};
+
+Transform.prototype.skewX = function(rad) {
+  var r = Math.tan(rad);
+  var m21 = this.m[0] * r + this.m[2];
+  var m22 = this.m[1] * r + this.m[3];
+  this.m[2] = m21;
+  this.m[3] = m22;
+};
+
 Transform.prototype.translate = function(x, y) {
   this.m[4] += this.m[0] * x + this.m[2] * y;
   this.m[5] += this.m[1] * x + this.m[3] * y;
@@ -103,15 +119,15 @@ Transform.prototype.transformPoint = function(px, py) {
   return {x:px, y:py};
 };
 
-Transform.prototype.transformRect = function(rx, ry, rw, rh) {
-  var topLeft = this.transformPoint(rx, ry);
-  var bottomRight = this.transformPoint(rx + rw, ry + rh);
-  return {
-    x:topLeft[0],
-    y:topLeft[1],
-    w:bottomRight[0],
-    h:bottomRight[1]
-  };
-};
+// Transform.prototype.transformRect = function(rx, ry, rw, rh) {
+//   var topLeft = this.transformPoint(rx, ry);
+//   var bottomRight = this.transformPoint(rx + rw, ry + rh);
+//   return {
+//     x:topLeft[0],
+//     y:topLeft[1],
+//     w:bottomRight[0],
+//     h:bottomRight[1]
+//   };
+// };
 
 module.exports = Transform;

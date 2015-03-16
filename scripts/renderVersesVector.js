@@ -69,10 +69,10 @@ function renderVersesVector(song, w, h, bounds) {
     var verseCanvas = document.createElement('canvas');
     var verseCtx;
     var verseTrans = new Transform();
-    var scale = .5;
+    var scale = 5;
     var xpos = 0.5;
     var ypos = 0.5;
-    var theta = 45;
+    var theta = Math.random() * 360;
     var origx = .5;
     var origy = .5;
     var trans;
@@ -84,13 +84,16 @@ function renderVersesVector(song, w, h, bounds) {
       -(trueBounds.w * origx),
       -(trueBounds.h * origy)
     );
+
+    verseTrans.skewX(5*Math.PI/180);
+    verseTrans.skewY(5*Math.PI/180);
     //verseTrans.translate(
     //  trueBounds.w * xpos / scale,
     //  trueBounds.h * ypos / scale
     //);
     verseTrans.rotate(Math.PI * theta/180); //angle
     inverse = verseTrans.getInverseTransform();
-    trans = inverse.transformPoint(bounds.w/2, bounds.h/2);
+    trans = inverse.transformPoint(bounds.w*.5, bounds.h * .5);
     verseTrans.translate(trans.x, trans.y);
     verseTrans.translate(-trueBounds.w * origx,-trueBounds.h * origy); //origin
 
