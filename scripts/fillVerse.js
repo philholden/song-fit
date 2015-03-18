@@ -43,6 +43,7 @@ function fillVerse(ctx, metrics, conf) {
   var off;
   verseTrans.scale(metrics.sf, metrics.sf);
   //verseTrans.translate(-metrics.x, -metrics.y);
+  verseTrans.rotate(conf.rotate); //angle
   verseTrans.scale(conf.scaleX, conf.scaleY);
   verseTrans.translate(
     -(metrics.w * conf.handleX),
@@ -52,7 +53,6 @@ function fillVerse(ctx, metrics, conf) {
   verseTrans.skewX(conf.skewX);
   verseTrans.skewY(conf.skewY);
 
-  verseTrans.rotate(conf.rotate); //angle
   inverse = verseTrans.getInverseTransform();
   off = verseTrans.transformPoint(metrics.x, metrics.y);
   trans = inverse.transformPoint(conf.posX, conf.posY);
@@ -61,6 +61,8 @@ function fillVerse(ctx, metrics, conf) {
 
   ctx.font = metrics.song.fontHeight + 'px ' + metrics.song.fontName;
   ctx.fillStyle = conf.fill;
+  ctx.strokeStyle = conf.fill;
+  //ctx.lineWidth = 0.2;
   //ctx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
   ctx.setTransform.apply(ctx, verseTrans.m);
 

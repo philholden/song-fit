@@ -87,10 +87,10 @@ function renderVersesVector(song, w, h, bounds) {
 
     verseTrans.skewX(5*Math.PI/180);
     verseTrans.skewY(5*Math.PI/180);
-    //verseTrans.translate(
-    //  trueBounds.w * xpos / scale,
-    //  trueBounds.h * ypos / scale
-    //);
+    verseTrans.translate(
+     trueBounds.w * xpos / scale,
+     trueBounds.h * ypos / scale
+    );
     verseTrans.rotate(Math.PI * theta/180); //angle
     inverse = verseTrans.getInverseTransform();
     trans = inverse.transformPoint(bounds.w*.5, bounds.h * .5);
