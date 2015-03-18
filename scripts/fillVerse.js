@@ -20,12 +20,13 @@ var defaults = {
 };
 
 function fillVerse(ctx, metrics, conf) {
+  var defs;
 
   function drawVerse(verse) {
     var lineNum = 0;
     verse.lines.forEach(function(line) {
       line.brokenLine.split('\n').forEach(function(fragment) {
-        ctx.fillText(fragment, 0, metrics.song.fontMetrics.ascent + lineNum * metrics.mLineHeight);
+        ctx.fillText(fragment, 0-metrics.x, -metrics.y + metrics.song.fontMetrics.ascent + lineNum * metrics.mLineHeight);
         lineNum++;
       });
     });
@@ -33,15 +34,15 @@ function fillVerse(ctx, metrics, conf) {
 
   ctx.save();
   conf = conf || {};
-  conf = merge(true, conf);
-  conf = merge(conf, defaults);
-  conf.fill = '#ccc';
+  defs = merge(true, defaults);
+  conf = merge(defs, conf);
 
   var verseTrans = new Transform();
   var trans;
   var inverse;
+  var off;
   verseTrans.scale(metrics.sf, metrics.sf);
-  verseTrans.translate(-metrics.x, -metrics.y);
+  //verseTrans.translate(-metrics.x, -metrics.y);
   verseTrans.scale(conf.scaleX, conf.scaleY);
   verseTrans.translate(
     -(metrics.w * conf.handleX),
@@ -53,12 +54,13 @@ function fillVerse(ctx, metrics, conf) {
 
   verseTrans.rotate(conf.rotate); //angle
   inverse = verseTrans.getInverseTransform();
+  off = verseTrans.transformPoint(metrics.x, metrics.y);
   trans = inverse.transformPoint(conf.posX, conf.posY);
   verseTrans.translate(trans.x, trans.y);
   verseTrans.translate(-metrics.w * conf.handleX,-metrics.h * conf.handleY); //origin
 
   ctx.font = metrics.song.fontHeight + 'px ' + metrics.song.fontName;
-  ctx.fillStyle = conf.fill();
+  ctx.fillStyle = conf.fill;
   //ctx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
   ctx.setTransform.apply(ctx, verseTrans.m);
 

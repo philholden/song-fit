@@ -14,11 +14,15 @@ function renderVersesVector(song, w, h, bounds) {
   var canvas = document.createElement('canvas');
   var mLineHeight = song.fontMetrics.h * song.lineHeight;
   var sf = aspect > song.aspect ? h / song.pxHeight : w / song.maxWidth;
+  // console.log('sf: ', sf);
+  // console.log('h: ', h / song.pxHeight, h, song.pxHeight);
+  // console.log('w: ', w / song.maxWidth, w);
   var ctx;
   var padding = 4;
   var trans = new Transform();
   var transInv;
   var trueBounds;
+  var overscan = 1.1;
 
   function drawVerse(verse, ctx) {
     var lineNum = 0;
@@ -34,11 +38,11 @@ function renderVersesVector(song, w, h, bounds) {
 
   //bounds true on second pass
   if (bounds) {
-    sf = aspect > bounds.w / bounds.h ? h / (bounds.h/(sf*1.1)) : w / (bounds.w/(sf*1.1));
+    sf = aspect > bounds.w / bounds.h ? h / (bounds.h/(sf*overscan)) : w / (bounds.w/(sf*overscan));
     canvas.width = Math.ceil(sf * song.maxWidth) + padding * 2;
     canvas.height = Math.ceil(sf * song.pxHeight) + padding * 2;
   } else {
-    sf *= 1.1;
+    sf *= overscan;
     canvas.width = Math.ceil(sf * song.maxWidth) + padding * 2;
     canvas.height = Math.ceil(sf * song.pxHeight) + padding * 2;
   }
@@ -63,10 +67,11 @@ function renderVersesVector(song, w, h, bounds) {
     trueBounds.sf = sf;
     trueBounds.song = song;
     trueBounds.mLineHeight = mLineHeight;
+    //document.body.appendChild(canvas);
+    // canvas.style.opacity = .5;
     return trueBounds;
   } else {
     bounds = canvasGetBounds(canvas);
-    console.log(bounds);
     return renderVersesVector(song, w, h, bounds);
   }
 }

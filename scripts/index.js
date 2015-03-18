@@ -1,16 +1,18 @@
 'use strict';
 
 require('../style/main.scss');
-var SongCanvas = require('./SongCanvas');
+var FullScreenCanvas = require('./FullScreenCanvas');
 var SongContext = require('./SongContext');
 var Song = require('./Song');
 var renderVerses = require('./renderVersesVector');
+var calculateVersesVector = require('./calculateVersesVector');
+var fillVerse = require('./fillVerse');
 
 
 
 var canvas = document.getElementById('mycanvas');
 var canvas2 = document.getElementById('canvas2');
-var songCanvas = new SongCanvas(canvas);
+
 var humpty = [
   'title: Humpty',
   'artist: Phil',
@@ -31,12 +33,47 @@ if (module.hot) {
   console.log('hot');
   module.hot.accept();
   module.hot.accept(
-    ['./renderVersesVector','./index','./Song','./SongCanvas'],
+    ['./renderVersesVector','./index','./Song','./FullScreenCanvas'],
   function() {
     location.reload();
   });
 }
+
+function build(song) {
+  var songCanvas = new FullScreenCanvas();
+  var sc = SongContext(canvas2, 1.5, 20, 'Arial');
+  var layouts;
+  var metrics;
+  var ctx;
+
+
+  setSong(song);
+  
+  songCanvas.addEventListener('resize', recalc);
+
+  function setSong(song) {
+    song = song;
+    layouts = sc.getPlausibleLayouts(sc.init(song));
+    recalc();
+  }
+
+  function recalc() {
+    var bestfit = sc.findBestFit(layouts,songCanvas.w,songCanvas.h);
+    console.log(bestfit, songCanvas.w, songCanvas.h);
+    metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
+    ctx = songCanvas.canvas.getContext('2d');
+    fillVerse(ctx, metrics,{
+      fill: '#f00',
+      posX: songCanvas.w/2,
+      posY: songCanvas.h/2
+
+    });
+  }
+
+}
+
 var song = new Song(humpty);
+build(song);
 
 var reqFullScreen = document.body.requestFullScreen ||
     document.body.webkitRequestFullScreen ||
@@ -64,14 +101,8 @@ ctx.fillRect(7,0,3,2);
 // var meta = new MetaSong(song, canvas2, 1.5, 20);
 // var maxlines = meta.calcMaxLines(160, 90);
 // meta.fitToAspect(5);
-var sc = SongContext(canvas2, 1.5, 20, 'Arial');
-var bestfit = sc.findBestFit(sc.getPlausibleLayouts(sc.init(song)),16,9);
-//one verse is too long
-//var bounds = renderSong(bestfit,1024,900);
 
-//var v110 = renderVerses(bestfit,1024,576);
-var v110 = renderVerses(bestfit,1024/1.6,576/1.6);
-console.log(bestfit,v110);
-//renderVerse(bestfit, 1, bounds);
 
-//should add cutting margins
+//    var sc = SongContext(canvas2, 1.5, 20, 'Arial');
+//    var bestfit = sc.findBestFit(sc.getPlausibleLayouts(sc.init(song)),16,9);
+//    var v110 = renderVerses(bestfit,1024/1.6,576/1.6);
