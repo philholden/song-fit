@@ -45,6 +45,7 @@ function build(song) {
   var layouts;
   var metrics;
   var ctx;
+  var id = 0;
 
 
   setSong(song);
@@ -62,27 +63,30 @@ function build(song) {
     console.log(bestfit, songCanvas.w, songCanvas.h);
     metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
     ctx = songCanvas.canvas.getContext('2d');
-    fillVerse(ctx, metrics,{
-      fill: '#f00',
-      posX: songCanvas.w/2,
-      posY: songCanvas.h/2,
-      rotate: Math.PI/180 * 10,
-      scaleX: .5,
-      scaleY: .2
-    });
-    animate();
+    // fillVerse(ctx, metrics,{
+    //   fill: '#f00',
+    //   posX: songCanvas.w/2,
+    //   posY: songCanvas.h/2,
+    //   rotate: Math.PI/180 * 10,
+    //   scaleX: .5,
+    //   scaleY: .2
+    // });
+    id++;
+    animate(id);
   }
 
-  function animate (render, duration, easing) {
+  function animate (myId) {
     var start = Date.now();
     (function loop () {
       var p = (Date.now()-start)%10000;
       var hue = Math.floor(p * 360/9000)%360;
       var hue2 = (180+Math.floor((p * 360)/9000))%360;
-      ctx.fillStyle = 'rgba(0,0,0,1)';
+      ctx.fillStyle = 'rgba(0,0,0,.1)';
       //ctx.fillStyle = 'hsla('+ hue2 +', 60%, 70%,.1)';
       ctx.fillRect(0,0,songCanvas.w,songCanvas.h);
-      requestAnimationFrame(loop);
+      if (myId === id) {
+        requestAnimationFrame(loop);
+      }
       fillVerse(ctx, metrics,{
         fill: 'hsla('+ hue +', 60%, 70%,1)',
         posX: songCanvas.w/2,
