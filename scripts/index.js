@@ -32,9 +32,14 @@ var humpty = [
 if (module.hot) {
   console.log('hot');
   module.hot.accept();
-  module.hot.accept(
-    ['./renderVersesVector','./index','./Song','./FullScreenCanvas'],
-  function() {
+  // module.hot.accept(
+  //   ['./renderVersesVector','./index','./Song','./FullScreenCanvas','./fillVerse'],
+  // function() {
+  //   alert(2);
+  //   location.reload();
+  // });
+  module.hot.dispose(function() {
+        // revoke the side effect
     location.reload();
   });
 }

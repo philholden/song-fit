@@ -16,7 +16,9 @@
   "dependencies": {
     "react": "^0.13.0-rc1",
     "flux": "^2.0.1",
-    "immutable": "^3.6.2"
+    "immutable": "^3.6.2",
+    "babel-core": "^4.7.16",
+    "babel-loader": "^4.2.0"
   },
   "scripts": {
     "start": "node server.js"

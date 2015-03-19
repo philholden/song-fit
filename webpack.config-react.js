@@ -30,8 +30,7 @@ module.exports = {
           'includePaths[]=' +
             (path.resolve(__dirname, './node_modules'))
       },
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
-      //{ test: /\.jsx?$/, loaders: ['react-hot', 'jsx?harmony'], exclude: /node_modules/ }
+      { test: /\.jsx?$/, loaders: ['react-hot', 'jsx?harmony'], exclude: /node_modules/ }
     ]
   }
 };
