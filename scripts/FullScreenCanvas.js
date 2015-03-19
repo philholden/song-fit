@@ -29,8 +29,10 @@ FullScreenCanvas.prototype.resize = function (w, h) {
   var ratio = window.devicePixelRatio || 1;
   this.w = w * ratio;
   this.h = h * ratio;
-  this.canvas.setAttribute('width', w);
-  this.canvas.setAttribute('height', h);
+  this.canvas.width = this.w;
+  this.canvas.height = this.h;
+  this.canvas.style.width = w + 'px';
+  this.canvas.style.height = h + 'px';
   this.canvas.dispatchEvent(new Event('resize'));
 };
 

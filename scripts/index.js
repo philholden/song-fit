@@ -41,7 +41,7 @@ if (module.hot) {
 
 function build(song) {
   var songCanvas = new FullScreenCanvas();
-  var sc = SongContext(canvas2, 1.5, 20, 'Arial');
+  var sc = SongContext(canvas2, 1.5, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif');
   var layouts;
   var metrics;
   var ctx;
@@ -78,7 +78,7 @@ function build(song) {
   function animate (myId) {
     var start = Date.now();
     (function loop () {
-      var p = (Date.now()-start)%10000;
+      var p = (Date.now()-start)%40000;
       var hue = Math.floor(p * 360/9000)%360;
       var hue2 = (180+Math.floor((p * 360)/9000))%360;
       ctx.fillStyle = 'rgba(0,0,0,.1)';
