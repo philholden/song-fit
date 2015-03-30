@@ -11,7 +11,6 @@ var fillVerse = require('./fillVerse');
 
 
 var canvas = document.getElementById('mycanvas');
-var canvas2 = document.getElementById('canvas2');
 
 var humpty = [
   'title: Humpty',
@@ -46,7 +45,7 @@ if (module.hot) {
 
 function build(song) {
   var songCanvas = new FullScreenCanvas();
-  var sc = SongContext(canvas2, 1.5, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif');
+  var sc = SongContext(1.2, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif');
   var layouts;
   var metrics;
   var ctx;
@@ -59,7 +58,7 @@ function build(song) {
 
   function setSong(song) {
     song = song;
-    layouts = sc.getPlausibleLayouts(sc.init(song));
+    layouts = sc.getPlausibleLayouts(sc.setSong(song));
     recalc();
   }
 
@@ -68,16 +67,16 @@ function build(song) {
     console.log(bestfit, songCanvas.w, songCanvas.h);
     metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
     ctx = songCanvas.canvas.getContext('2d');
-    // fillVerse(ctx, metrics,{
+    fillVerse(ctx, metrics,{
     //   fill: '#f00',
-    //   posX: songCanvas.w/2,
-    //   posY: songCanvas.h/2,
+       posX: songCanvas.w/2,
+       posY: songCanvas.h/2,
     //   rotate: Math.PI/180 * 10,
     //   scaleX: .5,
     //   scaleY: .2
-    // });
+    });
     id++;
-    animate(id);
+    //animate(id);
   }
 
   function animate (myId) {
@@ -112,24 +111,6 @@ var reqFullScreen = document.body.requestFullScreen ||
     document.body.webkitRequestFullScreen ||
     document.body.mozRequestFullScreen ||
     document.body.msRequestFullScreen || function() {};
-
-var ctx = canvas2.getContext('2d');
-
-ctx.fillStyle = '#fff';
-ctx.fillRect(7,0,3,2);
-
-
-
-
-//measureString('Helloyg', canvas2, 80);
-
-
-
-
-//var per = linePermutations('the quick brown fox sdfjhkjd jdfhkjdshf jhkjdshfjds jdd hdjdhj dhdd a jj shjsh hghg', 2)
-// console.log(per);
-// var mind = minDifference(per, canvas)
-// console.log(mind);
 
 // var meta = new MetaSong(song, canvas2, 1.5, 20);
 // var maxlines = meta.calcMaxLines(160, 90);

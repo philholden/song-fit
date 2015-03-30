@@ -17,9 +17,8 @@ function measureString(text, canvas, fontSize, font) {
   b.descent = b.y + b.h - fontSize;
   b.ascent = b.h - b.descent;
   ctx.fillStyle = 'rgba(0,0,0,0.5)';
-  ctx.fillRect(b.x,b.y,b.w,b.h);
+  ctx.fillRect(b.x, b.y, b.w, b.h);
 
-  document.body.appendChild(canvas);
   canvas.style.position = 'absolute';
   canvas.style.top = 0;
   canvas.style.background = '#ff0';

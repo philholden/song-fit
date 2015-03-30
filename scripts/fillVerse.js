@@ -12,10 +12,10 @@ var defaults = {
   rotate: 0,
   scaleX: 1,
   scaleY: 1,
-  handleX:0.5,
-  handleY:0.5,
-  posX:0,
-  posY:0,
+  handleX: 0.5,
+  handleY: 0.5,
+  posX: 0,
+  posY: 0,
   fill: '#ccc'
 };
 
@@ -26,7 +26,7 @@ function fillVerse(ctx, metrics, conf) {
     var lineNum = 0;
     verse.lines.forEach(function(line) {
       line.brokenLine.split('\n').forEach(function(fragment) {
-        ctx.fillText(fragment, 0-metrics.x, -metrics.y + metrics.song.fontMetrics.ascent + lineNum * metrics.mLineHeight);
+        ctx.fillText(fragment, 0 - metrics.x, -metrics.y + metrics.song.fontMetrics.ascent + lineNum * metrics.mLineHeight);
         lineNum++;
       });
     });
@@ -57,7 +57,7 @@ function fillVerse(ctx, metrics, conf) {
   off = verseTrans.transformPoint(metrics.x, metrics.y);
   trans = inverse.transformPoint(conf.posX, conf.posY);
   verseTrans.translate(trans.x, trans.y);
-  verseTrans.translate(-metrics.w * conf.handleX,-metrics.h * conf.handleY); //origin
+  verseTrans.translate(-metrics.w * conf.handleX, -metrics.h * conf.handleY); //origin
 
   ctx.font = metrics.song.fontHeight + 'px ' + metrics.song.fontName;
   ctx.fillStyle = conf.fill;

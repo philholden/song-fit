@@ -21,6 +21,7 @@ function Song(text) {
     this.id = parseInt(this.id,10);
   }
 
+  
   verses = text.trim().split('\n\n');
   verses = verses.map(function(verse) {
     return {lines: verse.split('\n')};
@@ -54,6 +55,13 @@ Song.prototype.toString = function() {
     return verse.lines.join('\n');
   }).join('\n\n')).trim();
 };
+
+Song.prototype.wholeSongText = function() {
+  return this.verses.map(function(verse) {
+    return verse.lines.join('\n');
+  }).join('\n\n');
+}
+
 
 Song.prototype.toLinesOnly = function() {
   var lines = [];

@@ -14,9 +14,6 @@ function renderVersesVector(song, w, h, bounds) {
   var canvas = document.createElement('canvas');
   var mLineHeight = song.fontMetrics.h * song.lineHeight;
   var sf = aspect > song.aspect ? h / song.pxHeight : w / song.maxWidth;
-  // console.log('sf: ', sf);
-  // console.log('h: ', h / song.pxHeight, h, song.pxHeight);
-  // console.log('w: ', w / song.maxWidth, w);
   var ctx;
   var padding = 4;
   var trans = new Transform();
@@ -38,7 +35,9 @@ function renderVersesVector(song, w, h, bounds) {
 
   //bounds true on second pass
   if (bounds) {
-    sf = aspect > bounds.w / bounds.h ? h / (bounds.h/(sf*overscan)) : w / (bounds.w/(sf*overscan));
+    sf = aspect > bounds.w / bounds.h ?
+      h / (bounds.h / (sf * overscan)) :
+      w / (bounds.w / (sf * overscan));
     canvas.width = Math.ceil(sf * song.maxWidth) + padding * 2;
     canvas.height = Math.ceil(sf * song.pxHeight) + padding * 2;
   } else {
@@ -51,19 +50,19 @@ function renderVersesVector(song, w, h, bounds) {
   ctx.font = song.fontHeight + 'px ' + song.fontName;
   ctx.fillStyle = '#fff';
   ctx.save();
-  trans.scale(sf,sf);
-  trans.translate(padding/sf, padding/sf);
+  trans.scale(sf, sf);
+  trans.translate(padding / sf, padding / sf);
   transInv = trans.getInverseTransform();
   ctx.setTransform.apply(ctx, trans.m);
 
   //draw all verses on top of each other
-  song.verses.forEach(function(verse){drawVerse(verse,ctx);});
+  song.verses.forEach(function(verse){drawVerse(verse, ctx);});
 
   if (bounds) {
     bounds = canvasGetBounds(canvas);
     trueBounds = transInv.transformPoint(bounds.x, bounds.y);
-    trueBounds.w = bounds.w/sf;
-    trueBounds.h = bounds.h/sf;
+    trueBounds.w = bounds.w / sf;
+    trueBounds.h = bounds.h / sf;
     trueBounds.sf = sf;
     trueBounds.song = song;
     trueBounds.mLineHeight = mLineHeight;

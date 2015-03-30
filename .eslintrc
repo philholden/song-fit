@@ -1,0 +1,17 @@
+{
+  "settings": {
+    "ecmascript": 6,
+    "jsx": false,
+  },
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+
+  },
+  "rules": {
+    "quotes": [2, "single"]
+  }
+
+}
