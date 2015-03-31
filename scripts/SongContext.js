@@ -1,14 +1,14 @@
 'use strict';
 
 var measureString = require('./measureString');
-var splitLineEvenly = require('./splitLineEvenly');
+var splitWidestLine = require('./splitWidestLine');
+var augmentSong = require('./augmentSong');
 
 function SongContext(lineHeight, fontHeight, fontName, verseGap) {
   var canvas = document.createElement('canvas');
   var ctx = canvas.getContext('2d');
   var fontMetrics = measureString('Hygpqil', canvas, fontHeight);
-  var mFontHeight = fontMetrics.h;
-  var fontGap = (lineHeight - 1) * mFontHeight;
+  verseGap = verseGap || lineHeight;
   fontName = fontName || 'Courier, Serif, Helvetica, Arial, Sans-Serif';
   ctx.font = fontHeight + 'px ' + fontName;
 
@@ -26,6 +26,7 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
       };
     }
     var metaSong = {
+      verseGap: verseGap,
       fontMetrics: fontMetrics,
       fontHeight: fontHeight, //fontHeight specified
       fontName: fontName,
@@ -36,7 +37,7 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
         lines: verse.lines.map(measure)
       };
     });
-    return augment(metaSong);
+    return metaSong;
   }
 
   function log(song) {
@@ -64,45 +65,38 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
     return out;
   }
 
-  function augment(metaSong) {
-    var h = 0;
-    var w = 0; //widest verse
-    var vHeight;
-    var vWidth; //widest line
-    var numLines = 0;
-    var augmented = clone(metaSong);
+  function getPlausibleSongLayouts(song) {
+    var augmented = augmentSong(setSong(song), true);
+    var plausible = [];
+    function tick(augmented) {
 
-    function max(line) {
-      if (line.width > w ){
-        w = line.width;
+      var maxHeight;
+
+      //find max width of longest verse
+      augmented = clone(augmented);
+      maxHeight = augmented.maxHeight;
+
+      //if all lines shorter than longest word return ie minwidth
+
+      if(augmented.pnumLines === augmented.numLines || maxHeight === 1000) {
+        return;
       }
-      if (line.width > vWidth ){
-        vWidth = line.width;
-      }
-      vHeight += line.height;
+
+      plausible.push(clone(augmented));
+      splitWidestLine(augmented.verses, canvas);
+
+      augmented = augmentSong(augmented, true);
+      tick(augmented);
     }
 
-    augmented.verses.forEach(function(verse){
-      vHeight = 0;
-      vWidth = 0;
-      verse.lines.forEach(max);
-      if (vHeight > h) h = vHeight;
-      if (vWidth > w) w = vWidth;
-      verse.height = vHeight;
-      verse.width = vWidth;
-      numLines+= vHeight;
-    });
+    tick(augmented);
+    console.log(plausible);
 
-    augmented.pxHeight = (h - 1) * fontGap + h * mFontHeight;
-    augmented.maxWidth = w;
-    augmented.maxHeight = h;
-    augmented.pnumLines = augmented.numLines;
-    augmented.numLines = numLines;
-    augmented.aspect = w / augmented.pxHeight;
-    return augmented;
+    return plausible;
   }
 
-  function getPlausibleLayouts(augmented) {
+  function getPlausibleVerseLayouts(song) {
+    var augmented = augmentSong(setSong(song), false);
     var plausible = [];
     function tick(augmented) {
       var shortVerses;
@@ -121,18 +115,6 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
 
       function maxWidth(a, b){
         return Math.max(a.width, b.width);
-      }
-      //must deal with long words
-      function splitWidestLine(verses) {
-        function widest(widest, item) {
-          return item.width > widest.width ? item : widest;
-        }
-        var widestVerse = verses.reduce(widest);
-        var widestLine = widestVerse.lines.reduce(widest);
-        var brokenLine = splitLineEvenly(widestLine.line, widestLine.height, canvas);
-        widestLine.width = brokenLine.width;
-        widestLine.height = brokenLine.breaks + 1;
-        widestLine.brokenLine = brokenLine.txt;
       }
 
       //find max width of longest verse
@@ -158,12 +140,12 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
           return;
         }
         plausible.push(clone(augmented));
-        splitWidestLine(longVerses);
+        splitWidestLine(longVerses, canvas);
       } else {
-        splitWidestLine(shortVerses);
+        splitWidestLine(shortVerses, canvas);
       }
 
-      augmented = augment(augmented);
+      augmented = augmentSong(augmented, false);
       tick(augmented);
     }
 
@@ -174,7 +156,8 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
 
   return {
     setSong: setSong,
-    getPlausibleLayouts: getPlausibleLayouts,
+    getPlausibleSongLayouts: getPlausibleSongLayouts,
+    getPlausibleVerseLayouts: getPlausibleVerseLayouts,
     findBestFit: findBestFit,
     log: log
   };

@@ -8,10 +8,6 @@ var renderVerses = require('./renderVersesVector');
 var calculateVersesVector = require('./calculateVersesVector');
 var fillVerse = require('./fillVerse');
 
-
-
-var canvas = document.getElementById('mycanvas');
-
 var humpty = [
   'title: Humpty',
   'artist: Phil',
@@ -26,7 +22,6 @@ var humpty = [
   'All the things forces and all the things men',
   'Couldn\'t fit Fumpty together again'
 ].join('\n');
-
 
 if (module.hot) {
   console.log('hot');
@@ -51,14 +46,14 @@ function build(song) {
   var ctx;
   var id = 0;
 
-
   setSong(song);
-  
+
   songCanvas.addEventListener('resize', recalc);
 
   function setSong(song) {
     song = song;
-    layouts = sc.getPlausibleLayouts(sc.setSong(song));
+    //layouts = sc.getPlausibleVerseLayouts(song);
+    layouts = sc.getPlausibleSongLayouts(song);
     recalc();
   }
 
@@ -91,7 +86,7 @@ function build(song) {
       if (myId === id) {
         requestAnimationFrame(loop);
       }
-      fillVerse(ctx, metrics,{
+      fillVerse(ctx, metrics, {
         fill: 'hsla('+ hue +', 60%, 70%,1)',
         posX: songCanvas.w/2,
         posY: songCanvas.h/2,
