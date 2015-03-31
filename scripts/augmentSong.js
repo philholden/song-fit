@@ -40,11 +40,11 @@ function augmentSong(metaSong, isSong) {
     numLines += vHeight;
   });
 
-  console.log('hello', isSong);
 
   augmented.pxHeight = isSong ?
     songHeight() :
     (h - 1) * fontGap + h * mFontHeight;
+  console.log('hello', isSong, songHeight());
   augmented.maxWidth = w;
   augmented.maxHeight = h;
   augmented.pnumLines = augmented.numLines;

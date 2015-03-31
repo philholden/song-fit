@@ -1,6 +1,7 @@
 module.exports = function drawVerse(song, verse, ctx, x, y, isStroke) {
   var lineNum = 0;
   var mLineHeight = song.fontMetrics.h * song.lineHeight;
+  ctx.font = song.fontHeight + 'px ' + song.fontName;
   song.verses[verse].lines.forEach(function(line) {
     line.brokenLine.split('\n').forEach(function(fragment) {
       if (isStroke) {

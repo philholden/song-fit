@@ -7,6 +7,10 @@ var Song = require('./Song');
 var renderVerses = require('./renderVersesVector');
 var calculateVersesVector = require('./calculateVersesVector');
 var drawVersesToGetBounds = require('./drawVersesToGetBounds');
+var drawSongToGetBounds = require('./drawSongToGetBounds');
+var drawVerse = require('./drawVerse');
+var drawSong = require('./drawSong');
+var renderAffineText = require('./renderAffineText');
 var fillVerse = require('./fillVerse');
 
 var humpty = [
@@ -46,6 +50,7 @@ function build(song) {
   var metrics;
   var ctx;
   var id = 0;
+  var renderVerseCallback;
 
   setSong(song);
 
@@ -53,8 +58,8 @@ function build(song) {
 
   function setSong(song) {
     song = song;
-    layouts = sc.getPlausibleVerseLayouts(song);
-    //layouts = sc.getPlausibleSongLayouts(song);
+    //layouts = sc.getPlausibleVerseLayouts(song);
+    layouts = sc.getPlausibleSongLayouts(song);
     recalc();
   }
 
@@ -62,12 +67,15 @@ function build(song) {
     var bestfit = sc.findBestFit(layouts,songCanvas.w,songCanvas.h);
     console.log(bestfit, songCanvas.w, songCanvas.h);
     //metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
-    metrics = drawVersesToGetBounds(bestfit, songCanvas.w, songCanvas.h, false);
+    metrics = drawSongToGetBounds(bestfit, songCanvas.w, songCanvas.h, false);
     ctx = songCanvas.canvas.getContext('2d');
-    fillVerse(ctx, metrics, bestfit, {
+    renderVerseCallback = function (ctx, offx, offy) {
+      drawSong(bestfit, ctx, offx, offy, false);
+    };
+    renderAffineText(ctx, metrics, renderVerseCallback, {
     //   fill: '#f00',
-       posX: songCanvas.w/2,
-       posY: songCanvas.h/2,
+      posX: songCanvas.w / 2,
+      posY: songCanvas.h / 2,
     //   rotate: Math.PI/180 * 10,
     //   scaleX: .5,
     //   scaleY: .2
@@ -88,7 +96,7 @@ function build(song) {
       if (myId === id) {
         requestAnimationFrame(loop);
       }
-      fillVerse(ctx, metrics, {
+      renderAffineText(ctx, metrics, renderVerseCallback, {
         fill: 'hsla('+ hue +', 60%, 70%,1)',
         posX: songCanvas.w/2,
         posY: songCanvas.h/2,
