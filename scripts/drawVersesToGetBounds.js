@@ -7,8 +7,8 @@ function drawVersesToGetBounds(song, canvasWidth, canvasHeight, isStroke) {
   var bounds1 = {
     x: 0,
     y: 0,
-    w: song.pxHeight,
-    h: song.maxWidth
+    h: song.pxHeight,
+    w: song.maxWidth
   };
 
   function drawCallback(ctx) {

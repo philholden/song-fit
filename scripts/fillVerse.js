@@ -2,6 +2,7 @@
 
 var Transform = require('./Transform');
 var drawVerse = require('./drawVerse');
+var drawSong = require('./drawVerse');
 var merge = require('merge');
 
 //metric output from renderVerseVector
@@ -20,7 +21,7 @@ var defaults = {
   fill: '#ccc'
 };
 
-function fillVerse(ctx, metrics, conf) {
+function fillVerse(ctx, metrics, song, conf) {
   var defs;
 
   ctx.save();
@@ -50,14 +51,14 @@ function fillVerse(ctx, metrics, conf) {
   verseTrans.translate(trans.x, trans.y);
   verseTrans.translate(-metrics.w * conf.handleX, -metrics.h * conf.handleY); //origin
 
-  ctx.font = metrics.song.fontHeight + 'px ' + metrics.song.fontName;
+  ctx.font = song.fontHeight + 'px ' + song.fontName;
   ctx.fillStyle = conf.fill;
   ctx.strokeStyle = conf.fill;
   //ctx.lineWidth = 0.2;
   //ctx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
   ctx.setTransform.apply(ctx, verseTrans.m);
 
-  drawVerse(metrics.song, 1, ctx, -metrics.x, -metrics.y, false);
+  drawVerse(song, 1, ctx, -metrics.x, -metrics.y, false);
   ctx.restore();
 }
 

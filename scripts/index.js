@@ -6,6 +6,7 @@ var SongContext = require('./SongContext');
 var Song = require('./Song');
 var renderVerses = require('./renderVersesVector');
 var calculateVersesVector = require('./calculateVersesVector');
+var drawVersesToGetBounds = require('./drawVersesToGetBounds');
 var fillVerse = require('./fillVerse');
 
 var humpty = [
@@ -52,17 +53,18 @@ function build(song) {
 
   function setSong(song) {
     song = song;
-    //layouts = sc.getPlausibleVerseLayouts(song);
-    layouts = sc.getPlausibleSongLayouts(song);
+    layouts = sc.getPlausibleVerseLayouts(song);
+    //layouts = sc.getPlausibleSongLayouts(song);
     recalc();
   }
 
   function recalc() {
     var bestfit = sc.findBestFit(layouts,songCanvas.w,songCanvas.h);
     console.log(bestfit, songCanvas.w, songCanvas.h);
-    metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
+    //metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
+    metrics = drawVersesToGetBounds(bestfit, songCanvas.w, songCanvas.h, false);
     ctx = songCanvas.canvas.getContext('2d');
-    fillVerse(ctx, metrics,{
+    fillVerse(ctx, metrics, bestfit, {
     //   fill: '#f00',
        posX: songCanvas.w/2,
        posY: songCanvas.h/2,
