@@ -20,7 +20,7 @@ function augmentSong(metaSong, isSong) {
   }
 
   function songHeight() {
-    var height = (augmented.verses.length - 1) * augmented.verseGap;
+    var height = (augmented.verses.length - 1) * augmented.verseGap * mFontHeight;
     console.log(height,augmented.verseGap);
     augmented.verses.forEach(function(verse) {
       var vh = verse.height;
