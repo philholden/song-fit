@@ -1,6 +1,7 @@
 'use strict';
 
 var canvasGetBounds = require('./canvasGetBounds');
+var drawVerse = require('./drawVerse');
 var Transform = require('./Transform');
 
 //Takes a song that has been meta info about verse metrics and renders
@@ -9,7 +10,7 @@ var Transform = require('./Transform');
 //desired size in order to get better metrics. The second pass is
 //at the desired size.
 
-function renderVersesVector(song, w, h, bounds) {
+function calculateVersesVector(song, w, h, bounds) {
   var aspect = w / h;
   var canvas = document.createElement('canvas');
   var mLineHeight = song.fontMetrics.h * song.lineHeight;
@@ -20,16 +21,6 @@ function renderVersesVector(song, w, h, bounds) {
   var transInv;
   var trueBounds;
   var overscan = 1.1;
-
-  function drawVerse(verse, ctx) {
-    var lineNum = 0;
-    verse.lines.forEach(function(line) {
-      line.brokenLine.split('\n').forEach(function(fragment) {
-        ctx.fillText(fragment, 0, song.fontMetrics.ascent + lineNum * mLineHeight);
-        lineNum++;
-      });
-    });
-  }
 
   canvas.setAttribute('id', 'canvas-super');
 
@@ -56,7 +47,9 @@ function renderVersesVector(song, w, h, bounds) {
   ctx.setTransform.apply(ctx, trans.m);
 
   //draw all verses on top of each other
-  song.verses.forEach(function(verse){drawVerse(verse, ctx);});
+  song.verses.forEach(function(verse, i){
+    drawVerse(song, i, ctx, 0, 0, false);
+  });
 
   if (bounds) {
     bounds = canvasGetBounds(canvas);
@@ -71,8 +64,8 @@ function renderVersesVector(song, w, h, bounds) {
     return trueBounds;
   } else {
     bounds = canvasGetBounds(canvas);
-    return renderVersesVector(song, w, h, bounds);
+    return calculateVersesVector(song, w, h, bounds);
   }
 }
 
-module.exports = renderVersesVector;
+module.exports = calculateVersesVector;

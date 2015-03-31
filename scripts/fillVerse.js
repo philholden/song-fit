@@ -1,6 +1,7 @@
 'use strict';
 
 var Transform = require('./Transform');
+var drawVerse = require('./drawVerse');
 var merge = require('merge');
 
 //metric output from renderVerseVector
@@ -21,16 +22,6 @@ var defaults = {
 
 function fillVerse(ctx, metrics, conf) {
   var defs;
-
-  function drawVerse(verse) {
-    var lineNum = 0;
-    verse.lines.forEach(function(line) {
-      line.brokenLine.split('\n').forEach(function(fragment) {
-        ctx.fillText(fragment, 0 - metrics.x, -metrics.y + metrics.song.fontMetrics.ascent + lineNum * metrics.mLineHeight);
-        lineNum++;
-      });
-    });
-  }
 
   ctx.save();
   conf = conf || {};
@@ -66,7 +57,7 @@ function fillVerse(ctx, metrics, conf) {
   //ctx.fillStyle = '#xxx'.replace(/x/g, x => (Math.random()*16|0).toString(16));
   ctx.setTransform.apply(ctx, verseTrans.m);
 
-  drawVerse(metrics.song.verses[1], ctx);
+  drawVerse(metrics.song, 1, ctx, -metrics.x, -metrics.y, false);
   ctx.restore();
 }
 
