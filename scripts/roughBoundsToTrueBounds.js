@@ -62,7 +62,7 @@ function roughBoundsToTrueBounds(drawCallback, w, h, bounds1, bounds2) {
     trueBounds.sf = sf;
 //    trueBounds.song = song;
 //    trueBounds.mLineHeight = mLineHeight;
-    //document.body.appendChild(canvas);
+    document.body.appendChild(canvas);
     // canvas.style.opacity = .5;
     return trueBounds;
   } else {

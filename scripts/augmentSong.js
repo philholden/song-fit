@@ -24,8 +24,10 @@ function augmentSong(metaSong, isSong) {
     console.log(height,augmented.verseGap);
     augmented.verses.forEach(function(verse) {
       var vh = verse.height;
-      height += (vh - 1) * fontGap + vh * mFontHeight;
+      height += (vh-1) * fontGap + vh * mFontHeight;
     });
+    //this is a fudge vvv
+    height += fontGap;
     return height;
   }
 

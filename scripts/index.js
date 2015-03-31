@@ -25,6 +25,16 @@ var humpty = [
   'Fumpty Mumpty sat on a stall',
   'Fumpty Mumpty heard a great call',
   'All the things forces and all the things men',
+  'Couldn\'t fit Fumpty together again',
+  '',
+  'Humpty Dumpty sat on a wall',
+  'Humpty Dumpty had a great fall',
+  'All the kings horses and all the kings men',
+  'Couldn\'t put Humpty together again',
+  '',
+  'Fumpty Mumpty sat on a stall',
+  'Fumpty Mumpty heard a great call',
+  'All the things forces and all the things men',
   'Couldn\'t fit Fumpty together again'
 ].join('\n');
 
