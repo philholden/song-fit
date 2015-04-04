@@ -4,14 +4,10 @@ require('../style/main.scss');
 var FullScreenCanvas = require('./FullScreenCanvas');
 var SongContext = require('./SongContext');
 var Song = require('./Song');
-var renderVerses = require('./renderVersesVector');
-var calculateVersesVector = require('./calculateVersesVector');
-var drawVersesToGetBounds = require('./drawVersesToGetBounds');
 var drawSongToGetBounds = require('./drawSongToGetBounds');
 var drawVerse = require('./drawVerse');
 var drawSong = require('./drawSong');
 var renderAffineText = require('./renderAffineText');
-var fillVerse = require('./fillVerse');
 
 var humpty = [
   'title: Humpty',
@@ -41,21 +37,14 @@ var humpty = [
 if (module.hot) {
   console.log('hot');
   module.hot.accept();
-  // module.hot.accept(
-  //   ['./renderVersesVector','./index','./Song','./FullScreenCanvas','./fillVerse'],
-  // function() {
-  //   alert(2);
-  //   location.reload();
-  // });
   module.hot.dispose(function() {
-        // revoke the side effect
     location.reload();
   });
 }
 
 function build(song) {
   var songCanvas = new FullScreenCanvas();
-  var sc = SongContext(1.2, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif');
+  var sc = SongContext(1.3, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif');
   var layouts;
   var metrics;
   var ctx;
@@ -75,15 +64,13 @@ function build(song) {
 
   function recalc() {
     var bestfit = sc.findBestFit(layouts,songCanvas.w,songCanvas.h);
-    //console.log(bestfit, songCanvas.w, songCanvas.h);
-    //metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
     metrics = drawSongToGetBounds(bestfit, songCanvas.w, songCanvas.h, false);
     ctx = songCanvas.canvas.getContext('2d');
     renderVerseCallback = function (ctx, offx, offy) {
       drawSong(bestfit, ctx, offx, offy, false);
     };
     renderAffineText(ctx, metrics, renderVerseCallback, {
-    //   fill: '#f00',
+      fill: '#000',
       posX: songCanvas.w / 2,
       posY: songCanvas.h / 2,
     //   rotate: Math.PI/180 * 10,
@@ -126,12 +113,3 @@ var reqFullScreen = document.body.requestFullScreen ||
     document.body.webkitRequestFullScreen ||
     document.body.mozRequestFullScreen ||
     document.body.msRequestFullScreen || function() {};
-
-// var meta = new MetaSong(song, canvas2, 1.5, 20);
-// var maxlines = meta.calcMaxLines(160, 90);
-// meta.fitToAspect(5);
-
-
-//    var sc = SongContext(canvas2, 1.5, 20, 'Arial');
-//    var bestfit = sc.findBestFit(sc.getPlausibleLayouts(sc.init(song)),16,9);
-//    var v110 = renderVerses(bestfit,1024/1.6,576/1.6);
