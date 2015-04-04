@@ -1,5 +1,7 @@
 'use strict';
 
+//body must have overflow hidden
+
 function FullScreenCanvas(canvas) {
   if(!canvas) {
     canvas = document.createElement('canvas');
