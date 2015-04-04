@@ -38,7 +38,6 @@ function roughBoundsToTrueBounds(drawCallback, w, h, bounds1, bounds2) {
   }
 
   ctx = canvas.getContext('2d');
-  //ctx.font = song.fontHeight + 'px ' + song.fontName;
   ctx.fillStyle = '#fff';
   ctx.save();
   trans.scale(sf, sf);
@@ -48,22 +47,14 @@ function roughBoundsToTrueBounds(drawCallback, w, h, bounds1, bounds2) {
 
   //draw all verses on top of each other
   drawCallback(ctx);
-  //document.body.appendChild(canvas);
-  //song.verses.forEach(function(verse, i){
-  //  drawVerse(song, i, ctx, 0, 0, false);
-  //});
 
   if (bounds2) {
-    console.log('hello3');
     bounds2 = canvasGetBounds(canvas);
     trueBounds = transInv.transformPoint(bounds2.x, bounds2.y);
     trueBounds.w = bounds2.w / sf;
     trueBounds.h = bounds2.h / sf;
     trueBounds.sf = sf;
-//    trueBounds.song = song;
-//    trueBounds.mLineHeight = mLineHeight;
-    document.body.appendChild(canvas);
-    // canvas.style.opacity = .5;
+    //document.body.appendChild(canvas);
     return trueBounds;
   } else {
     bounds2 = canvasGetBounds(canvas);

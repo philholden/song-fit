@@ -46,7 +46,6 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
         return line.brokenLine;
       }).join('\n');
     }).join('\n\n');
-    console.log('\n' + brokenSong);
   }
 
   function findBestFit(plausibleLayouts, w, h) {
@@ -90,7 +89,6 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
     }
 
     tick(augmented);
-    console.log(plausible);
 
     return plausible;
   }

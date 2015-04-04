@@ -7,6 +7,7 @@ function augmentSong(metaSong, isSong) {
   var augmented = JSON.parse(JSON.stringify(metaSong));
   var mFontHeight = augmented.fontMetrics.h;
   var lineHeight = augmented.lineHeight;
+  var mLineHeight = augmented.fontMetrics.h * augmented.lineHeight;
   var fontGap = (lineHeight - 1) * mFontHeight;
 
   function max(line) {
@@ -21,13 +22,11 @@ function augmentSong(metaSong, isSong) {
 
   function songHeight() {
     var height = (augmented.verses.length - 1) * augmented.verseGap * mFontHeight;
-    console.log(height,augmented.verseGap);
     augmented.verses.forEach(function(verse) {
       var vh = verse.height;
-      height += (vh-1) * fontGap + vh * mFontHeight;
+      height += vh * mLineHeight;
     });
-    //this is a fudge vvv
-    height += fontGap;
+    height -= fontGap;
     return height;
   }
 
@@ -46,7 +45,6 @@ function augmentSong(metaSong, isSong) {
   augmented.pxHeight = isSong ?
     songHeight() :
     (h - 1) * fontGap + h * mFontHeight;
-  console.log('hello', isSong, songHeight());
   augmented.maxWidth = w;
   augmented.maxHeight = h;
   augmented.pnumLines = augmented.numLines;

@@ -75,7 +75,7 @@ function build(song) {
 
   function recalc() {
     var bestfit = sc.findBestFit(layouts,songCanvas.w,songCanvas.h);
-    console.log(bestfit, songCanvas.w, songCanvas.h);
+    //console.log(bestfit, songCanvas.w, songCanvas.h);
     //metrics = calculateVersesVector(bestfit,songCanvas.w,songCanvas.h);
     metrics = drawSongToGetBounds(bestfit, songCanvas.w, songCanvas.h, false);
     ctx = songCanvas.canvas.getContext('2d');
