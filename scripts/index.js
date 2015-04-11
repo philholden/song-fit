@@ -70,6 +70,26 @@ var hark = [
 'Glory to the newborn King!'
 ].join('\n');
 
+var idols = [
+'Destroy the idols',
+'Which you trust',
+'Tear them down',
+'Grind them to dust',
+'',
+'We run the race',
+'fight the fight',
+'keep the faith',
+'and we get the prize',
+'',
+'Renew us Lord',
+'Take our lives',
+'Set us free',
+'Be our vicory',
+'',
+'Sustain us Lord',
+'Be our strength'
+].join('\n');
+
 if (module.hot) {
   console.log('hot');
   module.hot.accept();
@@ -80,7 +100,7 @@ if (module.hot) {
 
 function build(song) {
   var songCanvas = new FullScreenCanvas();
-  var sc = SongContext(1.3, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif');
+  var sc = SongContext(1.3, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',.75);
   var songRenderer;
   var verseRenderer;
   var verseLayouts;
@@ -171,9 +191,11 @@ function build(song) {
       fill: '#fff',
       posX: songCanvas.w / 2,
       posY: songCanvas.h / 2,
-    //   rotate: Math.PI/180 * 10,
+       //rotate: Math.PI/180 * 10,
        scaleX: .9,
-       scaleY: .9
+       scaleY: .9,
+    //   skewX: Math.PI/180 * 5,
+    //   skewY: Math.PI/180 * 2,
     });
   }
 
@@ -219,10 +241,19 @@ function build(song) {
   //   }());
   // }
   window.showSong = showSong;
-  window.showVerse = showVerse;
+  window.showVerse = showVerse;1
+  document.body.addEventListener('keyup',(e) => {
+    var n = e.keyCode - 48;
+    if (n === 0) {
+      showSong();
+    }
+    if (n > 0 && n <= song.verses.length) {
+      showVerse(n - 1);
+    }
+  });
 }
 
-var song = new Song(hark);
+var song = new Song(idols);
 build(song);
 
 var reqFullScreen = document.body.requestFullScreen ||

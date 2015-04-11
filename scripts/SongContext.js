@@ -104,11 +104,12 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
       var maxHeight;
 
       function shorts(verse) {
-        return verse.height < maxHeight;
+        return !longs(verse);//verse.height < maxHeight;
       }
 
       function longs(verse) {
-        return verse.height >= maxHeight;
+        console.log(verse.width, augmented.maxWidth);
+        return verse.height >= maxHeight || verse.width <= augmented.maxWidth;
       }
 
       function maxWidth(a, b){
@@ -133,8 +134,8 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
 
       //if shorter narrower than longer or empty
       if (!shortVerses.length || longerMaxWidth >= shorterMaxWidth){
-        //if adding line would reduce font size return end
-        if (maxHeight === 1000) {
+        //stop if 50 lines reached
+        if (maxHeight === 50) {
           return;
         }
         plausible.push(clone(augmented));
