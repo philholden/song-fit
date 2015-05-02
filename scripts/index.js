@@ -10,31 +10,6 @@ var drawVerse = require('./drawVerse');
 var drawSong = require('./drawSong');
 var renderAffineText = require('./renderAffineText');
 
-var humpty = [
-  'title: Humpty',
-  'artist: Phil',
-  '',
-  'Humpty Dumpty sat on a wall',
-  'Humpty Dumpty had a great fall',
-  'All the kings horses and all the kings men',
-  'Couldn\'t put Humpty together again',
-  '',
-  'Fumpty Mumpty sat on a stall',
-  'Fumpty Mumpty heard a great call',
-  'All the things forces and all the things men',
-  'Couldn\'t fit Fumpty together again',
-  '',
-  'Humpty Dumpty sat on a wall',
-  'Humpty Dumpty had a great fall',
-  'All the kings horses and all the kings men',
-  'Couldn\'t put Humpty together again',
-  '',
-  'Fumpty Mumpty sat on a stall',
-  'Fumpty Mumpty heard a great call',
-  'All the things forces and all the things men',
-  'Couldn\'t fit Fumpty together again'
-].join('\n');
-
 var hark = [
 'Hark the herald angels sing',
 'Glory to the newborn King!',
@@ -70,6 +45,65 @@ var hark = [
 'Glory to the newborn King!'
 ].join('\n');
 
+var codeMonkeyByJonathanCoultonCcByNd = [
+  'Code Monkey get up get coffee',
+  'Code Monkey go to job',
+  'Code Monkey have boring meeting',
+  'With boring manager Rob',
+  'Rob say Code Monkey very diligent',
+  'But his output stink',
+  'His code not "functional" or "elegant"',
+  'What do Code Monkey think?',
+  'Code Monkey think maybe manager want to write god damned login page himself',
+  'Code Monkey not say it out loud',
+  'Code Monkey not crazy, just proud',
+  '',
+  'Code Monkey like Fritos',
+  'Code Monkey like Tab and Mountain Dew',
+  'Code Monkey very simple man',
+  'With big warm fuzzy secret heart:',
+  'Code Monkey like you',
+  'Code Monkey like you',
+  '',
+  'Code Monkey hang around at front desk',
+  'Tell you sweater look nice',
+  'Code Monkey offer buy you soda',
+  'Bring you cup, bring you ice',
+  'You say no thank you for the soda cause',
+  'Soda make you fat',
+  'Anyway you busy with the telephone',
+  'No time for chat',
+  'Code Monkey have long walk back to cubicle he sit down pretend to work',
+  'Code Monkey not thinking so straight',
+  'Code Monkey not feeling so great',
+  '',
+  'Code Monkey like Fritos',
+  'Code Monkey like Tab and Mountain Dew',
+  'Code Monkey very simple man',
+  'With big warm fuzzy secret heart:',
+  'Code Monkey like you',
+  'Code Monkey like you a lot',
+  '',
+  'Code Monkey have every reason',
+  'To get out this place',
+  'Code Monkey just keep on working',
+  'See your soft pretty face',
+  'Much rather wake up, eat a coffee cake',
+  'Take bath, take nap',
+  'This job "fulfilling in creative way"',
+  'Such a load of crap',
+  'Code Monkey think someday he have everything even pretty girl like you',
+  'Code Monkey just waiting for now',
+  'Code Monkey say someday, somehow',
+  '',
+  'Code Monkey like Fritos',
+  'Code Monkey like Tab and Mountain Dew',
+  'Code Monkey very simple man',
+  'With big warm fuzzy secret heart:',
+  'Code Monkey like you',
+  'Code Monkey like you'
+].join('\n');
+
 var idols = [
 'Destroy the idols',
 'Which you trust',
@@ -77,17 +111,54 @@ var idols = [
 'Grind them to dust',
 '',
 'We run the race',
-'fight the fight',
-'keep the faith',
-'and we get the prize',
+'Fight the fight',
+'Keep the faith',
+'And we get the prize',
 '',
 'Renew us Lord',
 'Take our lives',
 'Set us free',
-'Be our vicory',
+'Be our victory',
 '',
 'Sustain us Lord',
 'Be our strength'
+].join('\n');
+
+var grace = [
+'Amazing grace! How sweet the sound',
+'That saved a wretch like me!',
+'I once was lost, but now am found;',
+'Was blind, but now I see.',
+// '',
+// '’Twas grace that taught my heart to fear,',
+// 'And grace my fears relieved;',
+// 'How precious did that grace appear',
+// 'The hour I first believed.',
+// '',
+// 'Through many dangers, toils and snares,',
+// 'I have already come;',
+// '’Tis grace hath brought me safe thus far,',
+// 'And grace will lead me home.',
+// '',
+// 'The Lord has promised good to me,',
+// 'His Word my hope secures;',
+// 'He will my Shield and Portion be,',
+// 'As long as life endures.',
+// '',
+// 'Yea, when this flesh and heart shall fail,',
+// 'And mortal life shall cease,',
+// 'I shall possess, within the veil,',
+// 'A life of joy and peace.',
+// '',
+// 'The earth shall soon dissolve like snow,',
+// 'The sun forbear to shine;',
+// 'But God, who called me here below,',
+// 'Will be forever mine.',
+// '',
+// 'When we’ve been there ten thousand years,',
+// 'Bright shining as the sun,',
+// 'We’ve no less days to sing God’s praise',
+// 'Than when we’d first begun.'
 ].join('\n');
 
 if (module.hot) {
@@ -100,7 +171,7 @@ if (module.hot) {
 
 function build(song) {
   var songCanvas = new FullScreenCanvas();
-  var sc = SongContext(1.3, 20, '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',.75);
+  var sc = SongContext(1.4, 20, 'RobotoThin',.75);
   var songRenderer;
   var verseRenderer;
   var verseLayouts;
@@ -192,8 +263,8 @@ function build(song) {
       posX: songCanvas.w / 2,
       posY: songCanvas.h / 2,
        //rotate: Math.PI/180 * 10,
-       scaleX: .9,
-       scaleY: .9,
+       scaleX: 1,
+       scaleY: 1,
     //   skewX: Math.PI/180 * 5,
     //   skewY: Math.PI/180 * 2,
     });
@@ -250,11 +321,23 @@ function build(song) {
     if (n > 0 && n <= song.verses.length) {
       showVerse(n - 1);
     }
+    if (n === 9) {
+      setSong(new Song(codeMonkeyByJonathanCoultonCcByNd));
+    }
   });
 }
 
-var song = new Song(idols);
-build(song);
+//https://www.npmjs.com/package/fontloader
+
+var font = new FontFace('RobotoThin','url(../fonts/Roboto-Thin.ttf)',{});
+font.loaded.then(function(){
+  console.log('font loaded');
+  var song = new Song(grace);
+  build(song);
+});
+font.load();
+
+
 
 var reqFullScreen = document.body.requestFullScreen ||
     document.body.webkitRequestFullScreen ||

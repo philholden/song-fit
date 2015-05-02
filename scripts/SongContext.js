@@ -108,7 +108,6 @@ function SongContext(lineHeight, fontHeight, fontName, verseGap) {
       }
 
       function longs(verse) {
-        console.log(verse.width, augmented.maxWidth);
         return verse.height >= maxHeight || verse.width <= augmented.maxWidth;
       }
 

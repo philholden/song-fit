@@ -54,10 +54,10 @@ function roughBoundsToTrueBounds(drawCallback, w, h, bounds1, bounds2) {
     trueBounds.w = bounds2.w / sf;
     trueBounds.h = bounds2.h / sf;
     trueBounds.sf = sf;
-    //document.body.appendChild(canvas);
     return trueBounds;
   } else {
     bounds2 = canvasGetBounds(canvas);
+    //document.body.appendChild(canvas);
     return roughBoundsToTrueBounds(drawCallback, w, h, bounds1, bounds2);
   }
 }
