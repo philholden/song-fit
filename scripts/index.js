@@ -52,6 +52,7 @@ var codeMonkeyByJonathanCoultonCcByNd = [
   'With boring manager Rob',
   'Rob say Code Monkey very diligent',
   'But his output stink',
+  '',
   'His code not "functional" or "elegant"',
   'What do Code Monkey think?',
   'Code Monkey think maybe manager want to write god damned login page himself',
@@ -71,6 +72,7 @@ var codeMonkeyByJonathanCoultonCcByNd = [
   'Bring you cup, bring you ice',
   'You say no thank you for the soda cause',
   'Soda make you fat',
+  '',
   'Anyway you busy with the telephone',
   'No time for chat',
   'Code Monkey have long walk back to cubicle he sit down pretend to work',
@@ -90,6 +92,7 @@ var codeMonkeyByJonathanCoultonCcByNd = [
   'See your soft pretty face',
   'Much rather wake up, eat a coffee cake',
   'Take bath, take nap',
+  '',
   'This job "fulfilling in creative way"',
   'Such a load of crap',
   'Code Monkey think someday he have everything even pretty girl like you',
@@ -123,6 +126,8 @@ var idols = [
 'Sustain us Lord',
 'Be our strength'
 ].join('\n');
+
+
 
 var grace = [
 'Amazing grace! How sweet the sound',
@@ -171,7 +176,7 @@ if (module.hot) {
 
 function build(song) {
   var songCanvas = new FullScreenCanvas();
-  var sc = SongContext(1.4, 20, 'RobotoThin',.75);
+  var sc = SongContext(1.6, 20, 'RobotoThin',.75);
   var songRenderer;
   var verseRenderer;
   var verseLayouts;
@@ -320,9 +325,13 @@ function build(song) {
     }
     if (n > 0 && n <= song.verses.length) {
       showVerse(n - 1);
+      console.log(n,(Date.now() - monkeyStart));
     }
-    if (n === 9) {
-      setSong(new Song(codeMonkeyByJonathanCoultonCcByNd));
+    // if (n === 9) {
+    //   setSong(new Song(codeMonkeyByJonathanCoultonCcByNd));
+    // }
+    if (e.keyCode === 72) {
+      playCodeMonkey();
     }
   });
 }
@@ -332,7 +341,7 @@ function build(song) {
 var font = new FontFace('RobotoThin','url(../fonts/Roboto-Thin.ttf)',{});
 font.loaded.then(function(){
   console.log('font loaded');
-  var song = new Song(grace);
+  var song = new Song(codeMonkeyByJonathanCoultonCcByNd);
   build(song);
 });
 font.load();
@@ -343,3 +352,29 @@ var reqFullScreen = document.body.requestFullScreen ||
     document.body.webkitRequestFullScreen ||
     document.body.mozRequestFullScreen ||
     document.body.msRequestFullScreen || function() {};
+
+var monkeyStart;
+var monkeyTimeouts = [];
+
+function playCodeMonkey() {
+  var audio = document.querySelector('#codemonkey')
+      audio.load();
+      audio.play();
+  monkeyStart = Date.now();
+  monkeyTimeouts.forEach(clearTimeout);
+monkeyTimeouts = [10,17064,
+,34926
+,58861
+,77097
+,95386
+,120461
+,143087
+,162546]
+//  monkeyTimeouts = [0, 35103, 58500, 94913, 124000, 161074]
+  .map(function(time,n){
+  return setTimeout(function(){
+//    console.log(n);
+//    showVerse(n);
+  },time);
+});
+}
